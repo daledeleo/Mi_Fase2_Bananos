@@ -164,10 +164,11 @@ def run_example(filename,path_modelo):
 	model = load_model(path_modelo)
 	# predict the class
 	result = model.predict_classes(img)
-	dic={0 :'Banano Amarillo',
-        1: 'Banano Verde',
-        2: 'Banano Amarillo con manchas negras',
-        3 :'Banano Verde-Amarillo'}
+	dic={
+        0 :'Clase A',
+        1: 'Clase B',
+        2: 'Clase C',
+        3 :'Clase D'}
 	print(dic[result[0]])
 
 '''
