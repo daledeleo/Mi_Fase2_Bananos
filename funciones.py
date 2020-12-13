@@ -1,4 +1,9 @@
 # Importando las librerias a usar
+import matplotlib.image as mpimg
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import load_img
+from tensorflow.python.keras import backend as K
 from matplotlib import pyplot
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,26 +13,23 @@ import numpy as np
 
 from keras.layers import Dense, Dropout, Flatten, BatchNormalization
 from keras import Sequential, Model, models
-from keras.applications.inception_resnet_v2 import InceptionResNetV2, preprocess_input
-from tensorflow.keras.applications.vgg19 import VGG19
-#from tensorflow.keras.applications.inception_v3 import InceptionV3
-#https://keras.io/api/applications/
+
+
+# from tensorflow.keras.applications.inception_v3 import InceptionV3
+# https://keras.io/api/applications/
 
 from sklearn.model_selection import train_test_split
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.python.keras.applications.mobilenet import preprocess_input
 from tensorflow.keras.preprocessing import image
 import keras
 from keras.utils import to_categorical
 import tensorflow as tf
 from keras.constraints import maxnorm
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 
-# make a prediction for a new image.
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.models import load_model
 
 def cargar_dataset(images, directories, path):
     """
@@ -94,30 +96,30 @@ def agregar_etiquetas(directories, dircount, images):
                     X num of data, y convert list a numpy
      """
     # Agregando etiquetas
-    labels=[]
-    tipos_de_banano=[]
+    labels = []
+    tipos_de_banano = []
 
-    indice=0
+    indice = 0
     for cantidad in dircount:
         for i in range(cantidad):
             labels.append(indice)
-        indice=indice+1
-    print("Cantidad etiquetas creadas: ",len(labels))
+        indice = indice+1
+    print("Cantidad etiquetas creadas: ", len(labels))
 
-    tipos_de_banano=[]
-    indice=0
+    tipos_de_banano = []
+    indice = 0
     for directorio in directories:
         name = directorio.split(os.sep)
-        print(indice , name[len(name)-1])
+        print(indice, name[len(name)-1])
         tipos_de_banano.append(name[len(name)-1])
-        indice=indice+1
+        indice = indice+1
 
     y = np.array(labels)
-    X = np.array(images, dtype=np.uint8) #convierto de lista a numpy
+    X = np.array(images, dtype=np.uint8)  # convierto de lista a numpy
     return X, y
 
 
-def normalizar_and_one_hot_encoding(X_data,y_data):
+def normalizar_and_one_hot_encoding(X_data, y_data):
     """
     Returns X_data_one_hot.
 
@@ -137,6 +139,8 @@ def normalizar_and_one_hot_encoding(X_data,y_data):
     return Y_data_one_hot
 
 # load and prepare the image
+
+
 def load_image(filename):
 	# load the image
 	img = load_img(filename, target_size=(224, 224))
